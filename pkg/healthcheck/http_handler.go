@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 )
 
 func Handler(hc HealthChecker) http.Handler {
-	r := mux.NewRouter()
+	r := chi.NewRouter()
 	r.HandleFunc("/live", func(w http.ResponseWriter, r *http.Request) {
 		handle(w, r, hc.CheckLive)
 	})

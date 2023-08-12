@@ -8,15 +8,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 
 	"github.com/vladislav-chunikhin/lib-go/pkg/healthcheck"
 	"github.com/vladislav-chunikhin/lib-go/pkg/logger"
 	"github.com/vladislav-chunikhin/lib-go/pkg/shutdown"
 	"github.com/vladislav-chunikhin/lib-go/pkg/startup"
 )
-
-type Opt func(*App)
 
 type App struct {
 	Config      *Config
@@ -32,7 +30,7 @@ type App struct {
 	httpMtServer *http.Server
 }
 
-func NewApp(options ...Opt) *App {
+func NewApp() *App {
 	cfg := createFromEnv()
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -43,10 +41,6 @@ func NewApp(options ...Opt) *App {
 		Config:      cfg,
 		cancel:      cancel,
 		readyCh:     make(chan struct{}, 1),
-	}
-
-	for _, opt := range options {
-		opt(app)
 	}
 
 	return app
@@ -99,11 +93,11 @@ func (a *App) initHTTP() {
 }
 
 func (a *App) initHTTPMaintenance() {
-	r := mux.NewRouter()
+	r := chi.NewRouter()
 
 	a.HealthCheck.RegisterLive("ctx.Done", healthcheck.ContextDone(a.Context))
 
-	r.Handle("/health", healthcheck.Handler(a.HealthCheck))
+	r.Mount("/health", healthcheck.Handler(a.HealthCheck))
 
 	a.httpMtServer = &http.Server{
 		Handler:           r,
@@ -145,7 +139,8 @@ func (a *App) runHTTP() error {
 		return nil
 	}
 
-	r := mux.NewRouter()
+	r := chi.NewMux()
+	r.Mount("/api", a.HttpServer.Handler)
 
 	a.HttpServer.Handler = r
 
