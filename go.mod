@@ -1,4 +1,4 @@
-module github.com/sport-news/lib-go
+module github.com/vladislav-chunikhin/lib-go
 
 go 1.21
 

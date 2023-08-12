@@ -10,10 +10,10 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/sport-news/lib-go/pkg/healthcheck"
-	"github.com/sport-news/lib-go/pkg/logger"
-	"github.com/sport-news/lib-go/pkg/shutdown"
-	"github.com/sport-news/lib-go/pkg/startup"
+	"github.com/vladislav-chunikhin/lib-go/pkg/healthcheck"
+	"github.com/vladislav-chunikhin/lib-go/pkg/logger"
+	"github.com/vladislav-chunikhin/lib-go/pkg/shutdown"
+	"github.com/vladislav-chunikhin/lib-go/pkg/startup"
 )
 
 type Opt func(*App)

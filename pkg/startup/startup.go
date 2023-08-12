@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/automaxprocs/maxprocs"
 
-	"github.com/sport-news/lib-go/pkg/logger"
+	"github.com/vladislav-chunikhin/lib-go/pkg/logger"
 )
 
 func SetMaxGoProcs(logger logger.Logger) error {

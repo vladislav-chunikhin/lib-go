@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/sport-news/lib-go/pkg/logger"
+	"github.com/vladislav-chunikhin/lib-go/pkg/logger"
 )
 
 type Closer interface {
