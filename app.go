@@ -70,6 +70,9 @@ func (a *App) Init() error {
 		return err
 	}
 
+	a.initHTTP()
+	a.initHTTPMaintenance()
+
 	if err = startup.SetMaxGoProcs(a.Logger); err != nil {
 		a.Logger.Fatalf("set max go procs error: %v", err)
 	}
