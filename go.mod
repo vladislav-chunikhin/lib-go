@@ -4,12 +4,10 @@ go 1.21
 
 require (
 	github.com/go-chi/chi v1.5.4
+	github.com/sony/gobreaker v0.5.0
 	go.uber.org/automaxprocs v1.5.3
 	go.uber.org/zap v1.25.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require (
-	github.com/sony/gobreaker v0.5.0 // indirect
-	go.uber.org/multierr v1.11.0 // indirect
-)
+require go.uber.org/multierr v1.11.0 // indirect

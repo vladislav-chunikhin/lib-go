@@ -16,15 +16,6 @@ const (
 	PanicLevel = "panic"
 )
 
-type key bool
-
-var (
-	NoOp      *Log
-	defLogger = NoOp
-
-	loggerKey key
-)
-
 type Fields map[string]interface{}
 
 type Logger interface {
@@ -82,7 +73,6 @@ func New(lvl string) (*Log, error) {
 		zap: l.WithOptions(zap.AddCallerSkip(1)),
 	}
 
-	defLogger = log
 	return log, nil
 }
 

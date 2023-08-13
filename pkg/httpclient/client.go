@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/vladislav-chunikhin/lib-go/pkg/circuitbreaker"
 	"github.com/vladislav-chunikhin/lib-go/pkg/logger"
 )
 
@@ -39,11 +40,21 @@ func NewClient(
 
 	return &Client{
 		client: &http.Client{
-			Timeout: timeout,
+			Transport: http.DefaultTransport,
+			Timeout:   timeout,
 		},
 		baseURL: URL,
 		logger:  logger,
 	}, nil
+}
+
+func (c *Client) AddCircuitBreaker(serviceName string, cbCfg *circuitbreaker.Config) {
+	c.client.Transport = circuitbreaker.WrapTransportWithCircuitBreaker(
+		serviceName,
+		cbCfg,
+		c.logger,
+		c.client.Transport,
+	)
 }
 
 func (c *Client) Do(ctx context.Context, req *http.Request, v any) error {
