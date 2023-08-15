@@ -35,6 +35,7 @@ func NewClient(ctx context.Context, cfg *Config) (*Client, error) {
 			Password: cfg.Password,
 		}),
 		options.Client().ApplyURI(cfg.URL),
+		options.Client().SetTimeout(cfg.Timeout),
 	)
 
 	if err != nil {

@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/vladislav-chunikhin/lib-go/pkg/circuitbreaker"
+	"github.com/vladislav-chunikhin/lib-go/pkg/limiter"
 	"github.com/vladislav-chunikhin/lib-go/pkg/logger"
 )
 
@@ -49,10 +50,17 @@ func NewClient(
 }
 
 func (c *Client) AddCircuitBreaker(serviceName string, cbCfg *circuitbreaker.Config) {
-	c.client.Transport = circuitbreaker.WrapTransportWithCircuitBreaker(
+	c.client.Transport = circuitbreaker.NewProxy(
 		serviceName,
 		cbCfg,
 		c.logger,
+		c.client.Transport,
+	)
+}
+
+func (c *Client) AddLimiter(limit int) {
+	c.client.Transport = limiter.NewProxy(
+		limit,
 		c.client.Transport,
 	)
 }

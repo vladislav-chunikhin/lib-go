@@ -8,9 +8,7 @@ import (
 	"syscall"
 )
 
-var (
-	ErrTermSig = errors.New("termination signal caught")
-)
+var ErrTermSig = errors.New("termination signal caught")
 
 type SignalTrap chan os.Signal
 

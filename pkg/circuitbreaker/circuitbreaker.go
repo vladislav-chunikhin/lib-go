@@ -35,7 +35,6 @@ func NewProxy(
 	cfg *Config,
 	log logger.Logger,
 	nextTransport http.RoundTripper,
-	callOnResponse func(*http.Response, error) (*http.Response, error),
 ) *Proxy {
 	settings := gobreaker.Settings{
 		Name:     serviceName,
@@ -61,17 +60,16 @@ func NewProxy(
 		},
 	}
 	return &Proxy{
-		cb:             gobreaker.NewCircuitBreaker(settings),
-		logger:         log,
-		nextTransport:  nextTransport,
-		callOnResponse: callOnResponse,
+		cb:            gobreaker.NewCircuitBreaker(settings),
+		logger:        log,
+		nextTransport: nextTransport,
 	}
 }
 
 func (p *Proxy) RoundTrip(req *http.Request) (*http.Response, error) {
 	cbResp, err := p.cb.Execute(func() (interface{}, error) {
 		resp, err := p.nextTransport.RoundTrip(req)
-		return p.callOnResponse(resp, err)
+		return resp, err
 	})
 
 	if errors.Is(err, gobreaker.ErrOpenState) {
