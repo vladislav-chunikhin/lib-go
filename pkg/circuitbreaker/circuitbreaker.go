@@ -24,10 +24,9 @@ type Config struct {
 }
 
 type Proxy struct {
-	cb             *gobreaker.CircuitBreaker
-	nextTransport  http.RoundTripper
-	callOnResponse func(*http.Response, error) (*http.Response, error)
-	logger         logger.Logger
+	cb            *gobreaker.CircuitBreaker
+	nextTransport http.RoundTripper
+	logger        logger.Logger
 }
 
 func NewProxy(
@@ -61,8 +60,8 @@ func NewProxy(
 	}
 	return &Proxy{
 		cb:            gobreaker.NewCircuitBreaker(settings),
-		logger:        log,
 		nextTransport: nextTransport,
+		logger:        log,
 	}
 }
 

@@ -13,10 +13,13 @@ import (
 )
 
 type Config struct {
-	URL      string        `yaml:"url"`
-	User     string        `yaml:"user"`
-	Password string        `yaml:"password"`
-	Timeout  time.Duration `yaml:"timeout"`
+	URL            string        `yaml:"url"`
+	User           string        `yaml:"user"`
+	Password       string        `yaml:"password"`
+	Timeout        time.Duration `yaml:"timeout"`
+	ConnectTimeout time.Duration `yaml:"connectTimeout"`
+	SocketTimeout  time.Duration `yaml:"socketTimeout"`
+	MaxPoolSize    uint64        `yaml:"maxPoolSize"`
 }
 
 type Client struct {
@@ -36,6 +39,9 @@ func NewClient(ctx context.Context, cfg *Config) (*Client, error) {
 		}),
 		options.Client().ApplyURI(cfg.URL),
 		options.Client().SetTimeout(cfg.Timeout),
+		options.Client().SetConnectTimeout(cfg.ConnectTimeout),
+		options.Client().SetSocketTimeout(cfg.SocketTimeout),
+		options.Client().SetMaxPoolSize(cfg.MaxPoolSize),
 	)
 
 	if err != nil {
